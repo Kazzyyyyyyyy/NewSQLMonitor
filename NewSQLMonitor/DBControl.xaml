@@ -1,0 +1,121 @@
+<Page x:Class="NewSQLMonitor.DBControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <Grid Width="Auto" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+
+
+        <!--Grid Definition-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.75*" x:Name="GUI_columnOne" />
+            <ColumnDefinition Width="0.6*" /> 
+            <ColumnDefinition Width="1.4*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+
+        <!--Borders-->
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" />
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" />
+
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" />
+
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" />
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" />
+
+
+        <!--Main control-->
+        <Button x:Name="GUI_confirmButton" Click="GUI_confirmButton_Click" FontSize="17.5" Content="CONFIRM" Height="30" Width="100" HorizontalAlignment="Left" Margin="250, 10, 10, 50" />
+
+        <TextBox x:Name="GUI_inputTextBox" Height="30" Width="225" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="17.5" />
+
+
+        <!--Tables-->
+        <Grid Grid.Column="1" VerticalAlignment="Bottom" Height="Auto" >
+            <Border BorderBrush ="Gray" BorderThickness="1" VerticalAlignment="Top" />
+            <Border BorderBrush ="Gray" BorderThickness="1" HorizontalAlignment="Right" />
+            <Border BorderBrush ="Gray" BorderThickness="1" HorizontalAlignment="Left" />
+
+            <TextBlock Name="GUI_tableHeadLineTextBlock" Text="Table's" FontSize="20" Margin="5" HorizontalAlignment="Left" Background="#1E1E1E" />
+            <TextBlock Name="GUI_tableNumberTextBlock" FontSize="20" Margin="5" HorizontalAlignment="Right" Background="#1E1E1E" />
+
+            <ComboBox Name="GUI_tableCMDComboBox" Width="125" FontSize="15" HorizontalContentAlignment="Center" HorizontalAlignment="Left" SelectionChanged="GUI_tableCMDComboBox_SelectionChanged" Margin="87,7,0,5" >
+                <ComboBoxItem Content="Load" />
+                <ComboBoxItem Content="Create" />
+                <ComboBoxItem Content="Remove (all)" />
+                <ComboBoxItem Content="Update" />
+                <ComboBoxItem Content="FindLine" />
+                <ComboBoxItem Content="Undo/LoadOldDB" />
+            </ComboBox>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1" Background="#2D2D30" VerticalAlignment="Top" Height="Auto" Margin="10, 20, 10, 10" >
+            <TextBlock Text=" No tables" x:Name="GUI_tableStandardTextBlock" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" />
+
+            <ListBox x:Name="GUI_tableListBox" SelectionChanged="GUI_tableListBox_SelectionChanged" Visibility="Hidden" VerticalAlignment="Top" MinWidth="200" FontSize="20" />
+        </Grid>
+
+
+        <!--Rows-->
+        <Grid Grid.Column="2" VerticalAlignment="Bottom" Height="Auto" >
+            <Border BorderBrush ="Gray" BorderThickness="1" VerticalAlignment="Top" />
+            <Border BorderBrush ="Gray" BorderThickness="1" HorizontalAlignment="Right" />
+
+            <TextBlock Text="Row's" Name="GUI_rowHeadLineTextBlock" FontSize="20" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" Background="#1E1E1E" />
+            <TextBlock Name="GUI_rowNumberTextBlock" FontSize="20" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="5" Background="#1E1E1E" />
+
+            <ComboBox Name="GUI_rowCMDComboBox" Width="125" FontSize="15" HorizontalContentAlignment="Center" HorizontalAlignment="Left" SelectionChanged="GUI_rowCMDComboBox_SelectionChanged" Margin="87,7,0,5" >
+                <ComboBoxItem Content="Add" />
+                <ComboBoxItem Content="Update" />
+                <ComboBoxItem Content="Remove (all)" />
+                <ComboBoxItem Content="FindLine" />
+                
+                
+            </ComboBox>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="2" Background="#2D2D30" VerticalAlignment="Top" Height="Auto" Margin="10, 20, 10, 10" >
+            <TextBlock Text=" No rows (to) load/ed" x:Name="GUI_rowStandardTextBlock" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" />
+
+            <ListBox Name="GUI_rowListBox" SelectionChanged="GUI_rowListBox_SelectionChanged" Visibility="Hidden" VerticalAlignment="Top" MinWidth="200" FontSize="20" />
+        </Grid>
+
+
+        <!--TableInfo (CODE DARF NICHT UNTER StringBuilder SEIN SONST BUG)-->
+        <TextBlock Grid.Row="1" Width="Auto" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10, 5, 5, 5" FontSize="17.5" Text="TableInfo:" Name="GUI_tableInfoHeadLine" Visibility="Hidden" />
+
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="90,5,5,5" Grid.Row="1" FontSize="17.5" Name="GUI_tableInfoLoadedTable" />
+
+        <Grid Grid.Row="1" Background="#2D2D30" x:Name="GUI_tableInfoGrid" Height="Auto" Visibility="Hidden" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto" MaxHeight="165" Margin="10,35,20,0" >
+            <Border BorderBrush ="Gray" BorderThickness="1" />
+
+            <ListView x:Name="GUI_tableInfoListView" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalContentAlignment="Left" Width="Auto" Height="Auto" FontSize="15" />
+        </Grid>
+
+        <!--StringBuilder und ich weiss ich koennte alles ein grid machen fuer Visibility aber hab kb jz-->
+        <TextBlock Grid.Row="1" Margin="10, 207.5, 5, 5" FontSize="17.5" Text="StringBuilder" Name="GUI_stringBuilderHeadlineTextBlock" Visibility="Hidden" />
+        <Button Grid.Row="1" Margin="10, 237.5, 0, 0" Width="90" HorizontalAlignment="Left" FontSize="15" Content="Add" Name="GUI_stringBuilderConfirmButton" Click="GUI_stringBuilderConfirmButton_Click" Visibility="Hidden" VerticalAlignment="Top" />
+        <Button Grid.Row="1" Margin="105, 237.5, 0, 0" Width="90" HorizontalAlignment="Left" FontSize="15" Content="Undo" Name="GUI_stringBuilderUndoButton" Click="GUI_stringBuilderUndoButton_Click" Visibility="Hidden" VerticalAlignment="Top" />
+        <Button Grid.Row="1" Margin="200, 237.5, 0, 0" Width="90" HorizontalAlignment="Left" FontSize="15" Content="Delete" Name="GUI_stringBuilderDeleteButton" Click="GUI_stringBuilderDeleteButton_Click" Visibility="Hidden" VerticalAlignment="Top" />
+
+        <Grid Grid.Row="1" Background="#2D2D30" x:Name="GUI_stringBuilderGrid" Height="Auto" Visibility="Hidden" VerticalAlignment="Top" Width="Auto" MaxHeight="250"  Margin="10, 270, 20, 5">
+
+            <Border BorderBrush ="Gray" BorderThickness="1" />
+
+            <ListBox x:Name="GUI_dataTypeAndTableInfoListBox" SelectionChanged="GUI_dataTypeAndTableInfoListBox_SelectionChanged" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalContentAlignment="Left" Width="Auto" Height="Auto" FontSize="15" />
+
+            <ListBox x:Name="GUI_constraintsListBox" Margin="5" SelectionChanged="GUI_constraintsListBox_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="Auto" Height="Auto" FontSize="15" />
+        </Grid>
+
+
+        <!--StringBuilderStringOutPut-->
+        <Grid Grid.Row="1" Grid.Column="1" Visibility="Hidden" Height="Auto" x:Name="GUI_stringBuilderOutPutGrid" Margin="10, 20, 10, 10" Background="#2D2D30" >
+            <TextBox x:Name="GUI_stringBuilderOutPut" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="20" />
+        </Grid>
+
+    </Grid>
+</Page>
